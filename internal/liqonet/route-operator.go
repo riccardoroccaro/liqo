@@ -88,7 +88,7 @@ func (r *RouteController) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	log := r.Log.WithValues("endpoint", req.NamespacedName)
 	var endpoint v1.TunnelEndpoint
 	//name of our finalizer
-	routeOperatorFinalizer := "routeOperator-" + r.NodeName + "-Finalizer.liqonet.liqo.io"
+	routeOperatorFinalizer := "routeOp-" + r.NodeName + "-liqonet.liqo.io"
 
 	if err := r.Get(ctx, req.NamespacedName, &endpoint); err != nil {
 		r.Log.Error(err, "unable to fetch endpoint")

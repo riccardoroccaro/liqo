@@ -30,3 +30,5 @@ spec:
     reservedSubnets:
     - {{ .Values.podCIDR }}
     - {{ .Values.serviceCIDR }}
+    - "10.244.0.0/16" #needed to run the network tests on lab9
+    - "10.96.0.0/12" # #needed to run the network tests on lab9
