@@ -55,3 +55,19 @@ Therefore you may need to repeat the above procedure on another cluster in order
 
 Once you have two clusters ready, you can start the peering procedure, which is presented in the [next step](../peer).
 
+## Uninstall
+
+This procedure uninstalls Liqo on your cluster.
+
+```bash
+curl https://raw.githubusercontent.com/LiqoTech/liqo/master/uninstall.sh | bash
+```
+
+### Delete CRDs
+
+If you want that the installed CRD will be completely purged, export `DELETE_CRD` environment variable before to call the script.
+
+```bash
+export DELETE_CRD=1
+curl https://raw.githubusercontent.com/LiqoTech/liqo/master/uninstall.sh | bash
+```
