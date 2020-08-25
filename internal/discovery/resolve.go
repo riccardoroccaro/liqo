@@ -59,7 +59,7 @@ func (discovery *DiscoveryCtrl) getTxts(results <-chan *zeroconf.ServiceEntry, o
 	var res []*TxtData
 	for entry := range results {
 		if discovery.isForeign(entry.AddrIPv4) || !onlyForeign {
-			ip, err := getEntryIP(entry)
+			ip, err := discovery.getEntryIP(entry)
 			if err != nil {
 				klog.Error(err, err.Error())
 				continue
@@ -100,11 +100,11 @@ func (discovery *DiscoveryCtrl) getIPs() map[string]bool {
 func (discovery *DiscoveryCtrl) isForeign(foreignIps []net.IP) bool {
 	myIps := discovery.getIPs()
 	for _, fIp := range foreignIps {
-		if myIps[fIp.String()] {
-			return false
+		if !myIps[fIp.String()] {
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 func getIP(addr net.Addr) net.IP {
@@ -118,12 +118,19 @@ func getIP(addr net.Addr) net.IP {
 	return ip
 }
 
-func getEntryIP(entry *zeroconf.ServiceEntry) (string, error) {
-	if len(entry.AddrIPv4) > 0 {
-		return entry.AddrIPv4[0].String(), nil
+func (discovery *DiscoveryCtrl) getEntryIP(entry *zeroconf.ServiceEntry) (string, error) {
+	myIps := discovery.getIPs()
+	for _, fIp := range entry.AddrIPv4 {
+		if !myIps[fIp.String()] {
+			return fIp.String(), nil
+		}
 	}
-	if len(entry.AddrIPv6) > 0 {
-		return entry.AddrIPv6[0].String(), nil
+
+	for _, fIp := range entry.AddrIPv6 {
+		if !myIps[fIp.String()] {
+			return fIp.String(), nil
+		}
 	}
+
 	return "", errors.New("no IP found")
 }
