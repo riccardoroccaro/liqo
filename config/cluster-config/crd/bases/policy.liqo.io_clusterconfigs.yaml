@@ -108,7 +108,7 @@ spec:
               type: object
             liqonetConfig:
               properties:
-                gatewayPrivateIP:
+                podCIDR:
                   type: string
                 reservedSubnets:
                   description: contains a list of reserved subnets in CIDR notation
@@ -133,7 +133,7 @@ spec:
                   - Vni
                   type: object
               required:
-              - gatewayPrivateIP
+              - podCIDR
               - reservedSubnets
               type: object
           required:
