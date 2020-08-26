@@ -2,7 +2,7 @@ package advertisement_operator
 
 import (
 	advv1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	advertisement_operator "github.com/liqoTech/liqo/internal/advertisement-operator"
 	"github.com/stretchr/testify/assert"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -10,13 +10,13 @@ import (
 	"time"
 )
 
-func createFakeClusterConfig() policyv1.ClusterConfig {
-	return policyv1.ClusterConfig{
+func createFakeClusterConfig() configv1alpha1.ClusterConfig {
+	return configv1alpha1.ClusterConfig{
 		ObjectMeta: v1.ObjectMeta{
 			Name: "fake-configuration",
 		},
-		Spec: policyv1.ClusterConfigSpec{
-			AdvertisementConfig: policyv1.AdvertisementConfig{
+		Spec: configv1alpha1.ClusterConfigSpec{
+			AdvertisementConfig: configv1alpha1.AdvertisementConfig{
 				ResourceSharingPercentage:  50,
 				MaxAcceptableAdvertisement: 5,
 				AutoAccept:                 true,
@@ -35,7 +35,7 @@ func testModifySharingPercentage(t *testing.T) {
 	clusterConfig := createFakeClusterConfig()
 	b := createBroadcaster(clusterConfig.Spec)
 	// create fake client for configuration watcher
-	configClient, err := policyv1.CreateClusterConfigClient("")
+	configClient, err := configv1alpha1.CreateClusterConfigClient("")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func testDisableBroadcaster(t *testing.T) {
 	clusterConfig := createFakeClusterConfig()
 	b := createBroadcaster(clusterConfig.Spec)
 	// create fake client for configuration watcher
-	configClient, err := policyv1.CreateClusterConfigClient("")
+	configClient, err := configv1alpha1.CreateClusterConfigClient("")
 	if err != nil {
 		t.Fatal(err)
 	}

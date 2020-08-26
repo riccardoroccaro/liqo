@@ -2,7 +2,7 @@ package advertisement_operator
 
 import (
 	v1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	advcontroller "github.com/liqoTech/liqo/internal/advertisement-operator"
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -20,7 +20,7 @@ func createReconciler(acceptedAdv, maxAcceptableAdv int32, autoAccept bool) advc
 		InitVKImage:      "",
 		HomeClusterId:    "",
 		AcceptedAdvNum:   acceptedAdv,
-		ClusterConfig: policyv1.AdvertisementConfig{
+		ClusterConfig: configv1alpha1.AdvertisementConfig{
 			MaxAcceptableAdvertisement: maxAcceptableAdv,
 			AutoAccept:                 autoAccept,
 		},
@@ -99,9 +99,9 @@ func TestManageConfigUpdate(t *testing.T) {
 	// the advList contains 10 accepted and 5 refused Adv
 	// create a new configuration with MaxAcceptableAdv = 15
 	// with the new configuration, check the 5 refused Adv are accepted
-	config := policyv1.ClusterConfig{
-		Spec: policyv1.ClusterConfigSpec{
-			AdvertisementConfig: policyv1.AdvertisementConfig{
+	config := configv1alpha1.ClusterConfig{
+		Spec: configv1alpha1.ClusterConfigSpec{
+			AdvertisementConfig: configv1alpha1.AdvertisementConfig{
 				MaxAcceptableAdvertisement: int32(advCount),
 				AutoAccept:                 true,
 			},

@@ -2,7 +2,7 @@ package advertisement_operator
 
 import (
 	protocolv1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	"github.com/liqoTech/liqo/pkg/clusterConfig"
 	"github.com/liqoTech/liqo/pkg/crdClient"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -12,7 +12,7 @@ import (
 )
 
 func (b *AdvertisementBroadcaster) WatchConfiguration(kubeconfigPath string, client *crdClient.CRDClient) {
-	go clusterConfig.WatchConfiguration(func(configuration *policyv1.ClusterConfig) {
+	go clusterConfig.WatchConfiguration(func(configuration *configv1alpha1.ClusterConfig) {
 		if !configuration.Spec.AdvertisementConfig.EnableBroadcaster {
 			klog.V(3).Info("ClusterConfig changed")
 			klog.Info("Stopping sharing resources with cluster " + b.ForeignClusterId)
@@ -54,7 +54,7 @@ func (b *AdvertisementBroadcaster) WatchConfiguration(kubeconfigPath string, cli
 }
 
 func (r *AdvertisementReconciler) WatchConfiguration(kubeconfigPath string) {
-	go clusterConfig.WatchConfiguration(func(configuration *policyv1.ClusterConfig) {
+	go clusterConfig.WatchConfiguration(func(configuration *configv1alpha1.ClusterConfig) {
 		if configuration.Spec.AdvertisementConfig.AutoAccept != r.ClusterConfig.AutoAccept ||
 			configuration.Spec.AdvertisementConfig.MaxAcceptableAdvertisement != r.ClusterConfig.MaxAcceptableAdvertisement {
 			klog.V(3).Info("ClusterConfig changed")
@@ -79,7 +79,7 @@ func (r *AdvertisementReconciler) WatchConfiguration(kubeconfigPath string) {
 	}, nil, kubeconfigPath)
 }
 
-func (r *AdvertisementReconciler) ManageConfigUpdate(configuration *policyv1.ClusterConfig, advList *protocolv1.AdvertisementList) (error, bool) {
+func (r *AdvertisementReconciler) ManageConfigUpdate(configuration *configv1alpha1.ClusterConfig, advList *protocolv1.AdvertisementList) (error, bool) {
 
 	updateFlag := false
 	if configuration.Spec.AdvertisementConfig.MaxAcceptableAdvertisement > r.ClusterConfig.MaxAcceptableAdvertisement {

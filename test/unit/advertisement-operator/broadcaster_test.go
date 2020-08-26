@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	protocolv1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	discoveryv1 "github.com/liqoTech/liqo/api/discovery/v1"
 	"github.com/liqoTech/liqo/internal/advertisement-operator"
 	"github.com/liqoTech/liqo/internal/kubernetes/test"
@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-func createBroadcaster(clusterConfig policyv1.ClusterConfigSpec) advertisement_operator.AdvertisementBroadcaster {
+func createBroadcaster(clusterConfig configv1alpha1.ClusterConfigSpec) advertisement_operator.AdvertisementBroadcaster {
 	// set the client in fake mode
 	crdClient.Fake = true
 

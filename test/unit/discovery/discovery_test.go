@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	protocolv1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	v1 "github.com/liqoTech/liqo/api/discovery/v1"
 	"github.com/liqoTech/liqo/internal/discovery"
 	"github.com/liqoTech/liqo/internal/discovery/kubeconfig"
@@ -127,7 +127,7 @@ func testClient(t *testing.T) {
 // tests if discovery controller is able to load it's configs from ClusterConfigs
 func testDiscoveryConfig(t *testing.T) {
 	policyConfig := *clientCluster.cfg
-	policyConfig.GroupVersion = &policyv1.GroupVersion
+	policyConfig.GroupVersion = &configv1alpha1.GroupVersion
 	client, err := crdClient.NewFromConfig(&policyConfig)
 	assert.NilError(t, err, "Can't get CRDClient")
 	err = clientCluster.discoveryCtrl.GetDiscoveryConfig(client, "")
@@ -135,12 +135,12 @@ func testDiscoveryConfig(t *testing.T) {
 
 	tmp, err := client.Resource("clusterconfigs").Get("configuration", metav1.GetOptions{})
 	assert.NilError(t, err, "Can't get configurations")
-	cc := tmp.(*policyv1.ClusterConfig)
+	cc := tmp.(*configv1alpha1.ClusterConfig)
 	cc.Spec.DiscoveryConfig.EnableAdvertisement = false
 	cc.Spec.DiscoveryConfig.EnableDiscovery = false
 	tmp, err = client.Resource("clusterconfigs").Update("configuration", cc, metav1.UpdateOptions{})
 	assert.NilError(t, err, "Can't update configurations")
-	cc = tmp.(*policyv1.ClusterConfig)
+	cc = tmp.(*configv1alpha1.ClusterConfig)
 
 	time.Sleep(1 * time.Second)
 	assert.Equal(t, *clientCluster.discoveryCtrl.Config, cc.Spec.DiscoveryConfig)
@@ -149,7 +149,7 @@ func testDiscoveryConfig(t *testing.T) {
 	cc.Spec.DiscoveryConfig.EnableDiscovery = true
 	tmp, err = client.Resource("clusterconfigs").Update("configuration", cc, metav1.UpdateOptions{})
 	assert.NilError(t, err, "Can't update configurations")
-	cc = tmp.(*policyv1.ClusterConfig)
+	cc = tmp.(*configv1alpha1.ClusterConfig)
 
 	time.Sleep(1 * time.Second)
 	assert.Equal(t, *clientCluster.discoveryCtrl.Config, cc.Spec.DiscoveryConfig)

@@ -6,9 +6,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.2.5
   creationTimestamp: null
-  name: clusterconfigs.policy.liqo.io
+  name: clusterconfigs.cluster.liqo.io
 spec:
-  group: policy.liqo.io
+  group: cluster.liqo.io
   names:
     kind: ClusterConfig
     listKind: ClusterConfigList

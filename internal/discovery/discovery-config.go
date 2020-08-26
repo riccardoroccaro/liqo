@@ -1,7 +1,7 @@
 package discovery
 
 import (
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	"github.com/liqoTech/liqo/pkg/clusterConfig"
 	"github.com/liqoTech/liqo/pkg/crdClient"
 	"k8s.io/klog"
@@ -10,7 +10,7 @@ import (
 func (discovery *DiscoveryCtrl) GetDiscoveryConfig(crdClient *crdClient.CRDClient, kubeconfigPath string) error {
 	waitFirst := make(chan bool)
 	isFirst := true
-	go clusterConfig.WatchConfiguration(func(configuration *policyv1.ClusterConfig) {
+	go clusterConfig.WatchConfiguration(func(configuration *configv1alpha1.ClusterConfig) {
 		klog.Info("Change Configuration")
 		discovery.handleConfiguration(configuration.Spec.DiscoveryConfig)
 		if isFirst {
@@ -24,7 +24,7 @@ func (discovery *DiscoveryCtrl) GetDiscoveryConfig(crdClient *crdClient.CRDClien
 	return nil
 }
 
-func (discovery *DiscoveryCtrl) handleConfiguration(config policyv1.DiscoveryConfig) {
+func (discovery *DiscoveryCtrl) handleConfiguration(config configv1alpha1.DiscoveryConfig) {
 	reloadServer := false
 	reloadClient := false
 	reloadCa := false

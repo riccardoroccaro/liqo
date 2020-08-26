@@ -2,7 +2,7 @@ package discovery
 
 import (
 	protocolv1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	discoveryv1 "github.com/liqoTech/liqo/api/discovery/v1"
 	"github.com/liqoTech/liqo/pkg/clusterID"
 	"github.com/liqoTech/liqo/pkg/crdClient"
@@ -13,7 +13,7 @@ import (
 type DiscoveryCtrl struct {
 	Namespace string
 
-	Config    *policyv1.DiscoveryConfig
+	Config    *configv1alpha1.DiscoveryConfig
 	stopMDNS  chan bool
 	crdClient *crdClient.CRDClient
 	advClient *crdClient.CRDClient

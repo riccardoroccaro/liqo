@@ -19,7 +19,7 @@ import (
 	"context"
 	goerrors "errors"
 	protocolv1 "github.com/liqoTech/liqo/api/advertisement-operator/v1"
-	policyv1 "github.com/liqoTech/liqo/api/cluster-config/v1"
+	configv1alpha1 "github.com/liqoTech/liqo/api/config/v1alpha1"
 	discoveryv1 "github.com/liqoTech/liqo/api/discovery/v1"
 	pkg "github.com/liqoTech/liqo/pkg/advertisement-operator"
 	"github.com/liqoTech/liqo/pkg/crdClient"
@@ -54,7 +54,7 @@ type AdvertisementReconciler struct {
 	InitVKImage        string
 	HomeClusterId      string
 	AcceptedAdvNum     int32
-	ClusterConfig      policyv1.AdvertisementConfig
+	ClusterConfig      configv1alpha1.AdvertisementConfig
 	AdvClient          *crdClient.CRDClient
 	DiscoveryClient    *crdClient.CRDClient
 	RetryTimeout       time.Duration
